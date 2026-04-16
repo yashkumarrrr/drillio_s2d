@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARIA — AI Senior DevOps Engineer · Step2Dev</title>
+<meta name="description" content="Not ChatGPT. A senior DevOps engineer that runs on AI — remembers your infrastructure for 4 weeks, fixes errors in 60 seconds, never sleeps.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Runde:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* === DESIGN TOKENS (from Framer Dreelio template) === */
+:root{
+  --clr-bg-top:#9fc3e6;
+  --clr-bg-mid:#c8d8e9;
+  --clr-bg-bot:#eddfd0;
+  --clr-white:#ffffff;
+  --clr-off:#f9f8f8;
+  --clr-card:#f4f1ee;
+  --clr-card2:#f1ebe5;
+  --clr-card3:#f0eae5;
+  --clr-border:rgba(97,74,68,.13);
+  --clr-border2:rgba(97,74,68,.2);
+  --clr-ink:#1a1615;
+  --clr-ink2:#453f3d;
+  --clr-ink3:#757170;
+  --clr-ink4:#9e9896;
+  --clr-brown:#614a44;
+  --clr-blue:#156cc2;
+  --clr-green:#0ea158;
+  --clr-amber:#cf8d13;
+  --clr-red:#c9502e;
+  --clr-btn-bg:#1a1615;
+  --r-pill:100px;
+  --r-lg:24px;
+  --r-md:16px;
+  --r-sm:12px;
+  --sh-card:0 4px 24px rgba(97,74,68,.08),0 1px 4px rgba(97,74,68,.05);
+  --sh-btn:0 2px 12px rgba(26,22,21,.2),0 1px 2px rgba(26,22,21,.1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Open Runde','Segoe UI',system-ui,sans-serif;
+  background:var(--clr-bg-top);
+  color:var(--clr-ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
+
+/* === ANIMATIONS === */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes dotB{0%,80%,100%{transform:translateY(0);opacity:.3}40%{transform:translateY(-5px);opacity:1}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s cubic-bezier(.22,1,.36,1),transform .65s cubic-bezier(.22,1,.36,1)}
+.reveal.visible{opacity:1;transform:none}
+.d1{transition-delay:.06s}.d2{transition-delay:.12s}.d3{transition-delay:.18s}
+.d4{transition-delay:.24s}.d5{transition-delay:.30s}
+
+/* === NAV (pill, frosted glass) === */
+.nav-wrap{
+  position:fixed;top:16px;left:50%;transform:translateX(-50%);
+  z-index:200;width:calc(100% - 32px);max-width:1072px;
+}
+nav{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 10px 10px 20px;
+  background:rgba(255,255,255,.25);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(117,115,114,.15);
+  border-radius:var(--r-pill);
+  transition:background .3s;
+}
+nav.scrolled{background:rgba(255,255,255,.4)}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:18px;font-weight:600;color:var(--clr-ink);letter-spacing:-.02em}
+.nav-logo svg{width:26px;height:26px}
+.nav-logo-box{width:30px;height:30px;border-radius:8px;background:var(--clr-ink);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
+.nav-links{display:flex;gap:2px}
+.nav-links a{padding:6px 13px;border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--clr-ink2);transition:all .15s}
+.nav-links a:hover{background:rgba(255,255,255,.4);color:var(--clr-ink)}
+.nav-r{display:flex;gap:8px;align-items:center}
+.btn-ghost-nav{padding:8px 18px;border-radius:var(--r-pill);font-size:14px;font-weight:500;color:var(--clr-ink2);background:transparent;border:none;cursor:pointer;font-family:inherit;transition:all .15s}
+.btn-ghost-nav:hover{background:rgba(255,255,255,.4);color:var(--clr-ink)}
+.btn-primary-nav{
+  padding:8px 20px;border-radius:var(--r-pill);font-size:14px;font-weight:600;
+  color:#fff;background:var(--clr-ink);border:none;cursor:pointer;font-family:inherit;
+  box-shadow:var(--sh-btn);transition:all .2s;
+}
+.btn-primary-nav:hover{background:#2d2826;transform:translateY(-1px)}
+
+/* === HERO === */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:120px 24px 80px;text-align:center;
+  background:linear-gradient(180deg,var(--clr-bg-top) 0%,var(--clr-bg-mid) 50%,var(--clr-bg-bot) 100%);
+  position:relative;overflow:hidden;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.4);border:1px solid var(--clr-border);
+  border-radius:var(--r-pill);padding:6px 14px;
+  font-size:13px;font-weight:600;color:var(--clr-brown);
+  margin-bottom:28px;animation:fadeUp .6s ease both;
+}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--clr-green);animation:pulse 2s infinite}
+.hero h1{
+  font-size:clamp(44px,7vw,90px);font-weight:600;
+  line-height:1.08;letter-spacing:-.04em;color:var(--clr-ink);
+  margin-bottom:6px;animation:fadeUp .7s .1s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-sub{
+  font-size:clamp(15px,1.8vw,20px);color:var(--clr-ink2);
+  max-width:560px;margin:18px auto 36px;line-height:1.6;font-weight:400;
+  animation:fadeUp .7s .2s cubic-bezier(.22,1,.36,1) both;
+}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;animation:fadeUp .7s .3s cubic-bezier(.22,1,.36,1) both}
+.btn-hero-main{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 28px;border-radius:var(--r-pill);font-size:16px;font-weight:600;
+  color:#fff;background:var(--clr-ink);border:none;cursor:pointer;font-family:inherit;
+  box-shadow:var(--sh-btn);transition:all .22s;
+}
+.btn-hero-main:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(26,22,21,.25)}
+.btn-hero-out{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:15px 24px;border-radius:var(--r-pill);font-size:16px;font-weight:500;
+  color:var(--clr-ink2);background:rgba(255,255,255,.5);
+  border:1px solid var(--clr-border2);cursor:pointer;font-family:inherit;
+  transition:all .2s;
+}
+.btn-hero-out:hover{background:rgba(255,255,255,.7);color:var(--clr-ink);transform:translateY(-1px)}
+.hero-trust{margin-top:20px;font-size:13px;color:var(--clr-ink3);display:flex;align-items:center;justify-content:center;gap:20px;flex-wrap:wrap;animation:fadeUp .7s .4s ease both}
+.hero-trust span{display:flex;align-items:center;gap:5px}
+.hero-trust span::before{content:'✓';color:var(--clr-green);font-weight:700}
+
+/* === DASHBOARD PREVIEW === */
+.hero-preview{position:relative;z-index:2;width:100%;max-width:1040px;margin:64px auto 0;animation:fadeUp .9s .5s cubic-bezier(.22,1,.36,1) both}
+.preview-card{
+  border-radius:20px;overflow:hidden;
+  border:2px solid rgba(97,74,68,.2);
+  background:#fff;
+  box-shadow:0 4px 50px rgba(97,74,68,.12);
+}
+.win-bar{display:flex;align-items:center;gap:6px;padding:10px 16px;background:#f8f7f6;border-bottom:1px solid var(--clr-border)}
+.w-dot{width:10px;height:10px;border-radius:50%}
+.win-url{flex:1;margin-left:10px;background:#eeecea;border-radius:6px;padding:4px 12px;font-size:11px;font-family:monospace;color:#9e9896}
+.dash-layout{display:grid;grid-template-columns:210px 1fr;height:430px}
+.dash-sidebar{background:#f9f8f8;border-right:1px solid var(--clr-border);padding:14px 10px;display:flex;flex-direction:column;gap:2px;overflow:hidden}
+.sb-section{font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--clr-ink4);padding:8px 10px 5px;font-family:monospace}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:10px;font-size:12px;color:var(--clr-ink3);cursor:default}
+.sb-item.active{background:rgba(26,22,21,.06);color:var(--clr-ink);font-weight:600}
+.sb-div{height:1px;background:var(--clr-border);margin:6px 0}
+.hist-item{display:flex;align-items:center;gap:7px;padding:5px 10px;border-radius:8px;font-size:11px;color:var(--clr-ink3)}
+.h-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.dash-main{display:flex;flex-direction:column;overflow:hidden}
+.dash-tabs{display:flex;gap:2px;padding:10px 16px 0;background:#f9f8f8;border-bottom:1px solid var(--clr-border)}
+.d-tab{padding:7px 14px;border-radius:8px 8px 0 0;font-size:11px;font-weight:600;color:var(--clr-ink3);border-bottom:2px solid transparent}
+.d-tab.active{color:var(--clr-ink);border-bottom-color:var(--clr-ink);background:rgba(0,0,0,.04)}
+.dash-msgs{flex:1;padding:16px 18px;display:flex;flex-direction:column;gap:10px;overflow:hidden}
+.dmsg{display:flex;gap:8px;align-items:flex-start}
+.dmsg.u{flex-direction:row-reverse}
+.dav{width:26px;height:26px;border-radius:8px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff}
+.dav.ai{background:var(--clr-ink)}
+.dav.u{background:#d9d5d3;color:var(--clr-ink2)}
+.dbub{padding:9px 13px;border-radius:11px;font-size:11.5px;line-height:1.55;max-width:84%}
+.dbub.ai{background:#f4f1ee;border:1px solid var(--clr-border);color:var(--clr-ink2)}
+.dbub.u{background:var(--clr-ink);color:#fff;font-weight:500}
+.code-blk{background:#1a1615;border:1px solid rgba(255,255,255,.06);border-radius:10px;overflow:hidden;flex-shrink:0}
+.code-top{display:flex;align-items:center;justify-content:space-between;padding:7px 13px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.code-lang{font-size:10px;font-family:monospace;color:rgba(255,255,255,.3);display:flex;align-items:center;gap:5px}
+.code-lang::before{content:'';width:4px;height:4px;border-radius:50%;background:#0ea158}
+.code-body{padding:10px 14px;font-family:monospace;font-size:11px;color:#c9d1d9;line-height:1.7}
+.g{color:#56d364}.b{color:#79c0ff}.o{color:#ffa657}
+.typing-row{display:flex;align-items:center;gap:8px}
+.dots{display:flex;gap:3px;padding:7px 11px;background:#f4f1ee;border:1px solid var(--clr-border);border-radius:10px}
+.dot{width:5px;height:5px;border-radius:50%;background:var(--clr-ink3);animation:dotB 1.2s ease-in-out infinite}
+.dot:nth-child(2){animation-delay:.15s}.dot:nth-child(3){animation-delay:.3s}
+.dash-metrics{display:flex;border-top:1px solid var(--clr-border);flex-shrink:0;background:#f9f8f8}
+.metric{flex:1;padding:8px 14px;border-right:1px solid var(--clr-border);display:flex;align-items:center;gap:8px}
+.metric:last-child{border-right:none}
+.m-label{font-size:10px;color:var(--clr-ink3);font-family:monospace}
+.m-val{font-size:12px;font-weight:700;font-family:monospace}
+.m-bar{flex:1;height:3px;background:#e4e2e2;border-radius:2px;overflow:hidden}
+.m-fill{height:100%;border-radius:2px}
+.preview-fade{position:absolute;bottom:0;left:0;right:0;height:180px;background:linear-gradient(to bottom,transparent,var(--clr-bg-bot));border-radius:0 0 20px 20px;pointer-events:none}
+
+/* === SHARED === */
+.wrap{max-width:1072px;margin:0 auto;padding:0 24px}
+.section{padding:120px 0}
+.sec-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(97,74,68,.08);border:1px solid rgba(97,74,68,.15);
+  border-radius:var(--r-pill);padding:5px 14px;
+  font-size:12px;font-weight:600;color:var(--clr-brown);
+  text-transform:uppercase;letter-spacing:.05em;margin-bottom:16px;
+  font-family:monospace;
+}
+h2.sec-h{font-size:clamp(32px,4vw,56px);font-weight:600;letter-spacing:-.04em;line-height:1.1;color:var(--clr-ink);margin-bottom:14px}
+.sec-p{font-size:17px;color:var(--clr-ink2);line-height:1.65;max-width:480px}
+.center .sec-p{margin:0 auto}
+.grad-div{height:1px;background:linear-gradient(90deg,transparent,rgba(97,74,68,.2),transparent)}
+
+/* === TRUST LOGOS === */
+.trust{padding:40px 0;text-align:center;background:var(--clr-off);border-top:1px solid var(--clr-border);border-bottom:1px solid var(--clr-border)}
+.trust-lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--clr-ink3);margin-bottom:22px;font-family:monospace}
+.trust-logos{display:flex;align-items:center;justify-content:center;gap:48px;flex-wrap:wrap}
+.trust-logo{font-size:15px;font-weight:600;color:var(--clr-ink3);opacity:.35;transition:opacity .2s;user-select:none}
+.trust-logo:hover{opacity:.6}
+
+/* === FEATURES === */
+.feat-section{background:var(--clr-off);border-top:1px solid var(--clr-border);border-bottom:1px solid var(--clr-border)}
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--clr-border);border:1px solid var(--clr-border);border-radius:20px;overflow:hidden;margin-top:56px}
+.feat-card{background:var(--clr-off);padding:32px 28px;position:relative;overflow:hidden;transition:background .3s;cursor:default}
+.feat-card:hover{background:#f0ece8}
+.feat-icon{width:48px;height:48px;border-radius:13px;background:rgba(97,74,68,.08);border:1px solid rgba(97,74,68,.12);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:18px;transition:all .3s}
+.feat-card:hover .feat-icon{transform:scale(1.08) rotate(3deg)}
+.feat-name{font-size:15px;font-weight:600;color:var(--clr-ink);margin-bottom:8px;letter-spacing:-.02em}
+.feat-desc{font-size:13.5px;color:var(--clr-ink2);line-height:1.65}
+.feat-chip{display:inline-block;margin-top:10px;font-size:10px;font-weight:600;letter-spacing:.05em;font-family:monospace;color:var(--clr-brown);background:rgba(97,74,68,.08);padding:3px 8px;border-radius:5px}
+
+/* === HOW IT WORKS === */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:60px;position:relative}
+.steps::before{content:'';position:absolute;top:33px;left:16.67%;right:16.67%;height:1px;background:linear-gradient(90deg,var(--clr-brown),#8b6360);opacity:.2}
+.step{display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 28px;position:relative;z-index:1}
+.step-n{width:66px;height:66px;border-radius:50%;background:var(--clr-off);border:1px solid var(--clr-border2);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:600;color:var(--clr-brown);margin-bottom:20px;box-shadow:0 0 0 8px rgba(97,74,68,.04);transition:all .3s}
+.step:hover .step-n{border-color:var(--clr-brown);box-shadow:0 0 0 8px rgba(97,74,68,.07)}
+.step-title{font-size:16px;font-weight:600;color:var(--clr-ink);margin-bottom:8px;letter-spacing:-.02em}
+.step-desc{font-size:13.5px;color:var(--clr-ink2);line-height:1.65}
+
+/* === DEMO TERMINAL === */
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+.demo-pts{display:flex;flex-direction:column;gap:12px}
+.demo-pt{display:flex;align-items:flex-start;gap:13px;padding:15px 17px;border-radius:13px;background:var(--clr-off);border:1px solid var(--clr-border);transition:all .2s}
+.demo-pt:hover{border-color:rgba(97,74,68,.3);transform:translateX(4px)}
+.demo-pt-icon{width:36px;height:36px;border-radius:9px;flex-shrink:0;background:rgba(97,74,68,.08);border:1px solid rgba(97,74,68,.12);display:flex;align-items:center;justify-content:center;font-size:16px}
+.demo-pt-title{font-size:13px;font-weight:600;color:var(--clr-ink);margin-bottom:3px}
+.demo-pt-desc{font-size:12px;color:var(--clr-ink3);line-height:1.45}
+.terminal{background:#1a1615;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06);box-shadow:0 20px 48px rgba(26,22,21,.25)}
+.term-bar{display:flex;align-items:center;gap:6px;padding:11px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06)}
+.t-dot{width:10px;height:10px;border-radius:50%}
+.term-title{flex:1;text-align:center;font-size:11px;font-family:monospace;color:rgba(255,255,255,.2)}
+.term-body{padding:18px;font-family:monospace;font-size:12px;line-height:1.75;color:#e6edf3}
+.tl{display:flex;gap:8px;margin-bottom:2px}
+.tp{color:#0ea158;flex-shrink:0}.tai{color:#84b9ef;flex-shrink:0}.tc{color:#e6edf3}.to{color:rgba(255,255,255,.4)}.ts{color:#56d364}.te{color:#e88;}.th{color:#ffa657}
+.cur{display:inline-block;width:7px;height:13px;background:#84b9ef;animation:pulse .8s infinite;vertical-align:middle}
+
+/* === STATS === */
+.stats-sec{padding:64px 0;border-top:1px solid var(--clr-border);border-bottom:1px solid var(--clr-border);background:linear-gradient(135deg,rgba(97,74,68,.05),rgba(21,108,194,.03))}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-item{text-align:center;padding:24px;border-right:1px solid var(--clr-border)}
+.stat-item:last-child{border-right:none}
+.stat-n{font-size:clamp(36px,4.5vw,60px);font-weight:600;letter-spacing:-.05em;color:var(--clr-brown);margin-bottom:5px;line-height:1}
+.stat-l{font-size:14px;font-weight:600;color:var(--clr-ink2);margin-bottom:3px}
+.stat-s{font-size:12px;color:var(--clr-ink3)}
+
+/* === TESTIMONIALS === */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:48px}
+.testi-card{background:var(--clr-off);border:1px solid var(--clr-border);border-radius:var(--r-lg);padding:24px;transition:all .3s;box-shadow:var(--sh-card)}
+.testi-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(97,74,68,.1)}
+.testi-stars{color:var(--clr-amber);font-size:13px;letter-spacing:2px;margin-bottom:12px}
+.testi-q{font-size:14px;line-height:1.7;color:var(--clr-ink2);margin-bottom:18px;position:relative;padding-left:18px}
+.testi-q::before{content:'"';position:absolute;left:0;top:-4px;font-size:26px;color:var(--clr-brown);font-weight:600;line-height:1}
+.testi-who{display:flex;align-items:center;gap:10px}
+.testi-av{width:36px;height:36px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.testi-name{font-size:13px;font-weight:600;color:var(--clr-ink)}
+.testi-role{font-size:11px;color:var(--clr-ink3)}
+
+/* === COMPARISON === */
+.compare-section{background:var(--clr-off);border-top:1px solid var(--clr-border);border-bottom:1px solid var(--clr-border)}
+.compare-cards{display:grid;grid-template-columns:1fr 72px 1fr;gap:20px;align-items:center;margin-top:56px}
+.cmp-card{background:#fff;border:1px solid var(--clr-border2);border-radius:var(--r-lg);padding:26px;box-shadow:var(--sh-card);transition:all .4s}
+.cmp-card.them{opacity:.8}
+.cmp-card.them:hover{opacity:1}
+.cmp-card.us{border-color:rgba(97,74,68,.4);background:linear-gradient(145deg,#fff,rgba(97,74,68,.04));box-shadow:var(--sh-card),0 0 40px rgba(97,74,68,.1);position:relative}
+.us-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--clr-ink);color:#fff;font-size:10px;font-weight:700;padding:4px 16px;border-radius:var(--r-pill);font-family:monospace;white-space:nowrap;letter-spacing:.04em}
+.vs-col{display:flex;flex-direction:column;align-items:center;gap:10px}
+.vs-badge{width:44px;height:44px;border-radius:50%;background:var(--clr-ink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
+.vs-line{width:1px;height:32px;background:linear-gradient(to bottom,transparent,rgba(97,74,68,.3),transparent)}
+.cmp-hd{margin-bottom:18px;padding-bottom:16px;border-bottom:1px solid var(--clr-border)}
+.cmp-brand{display:flex;align-items:center;gap:9px;margin-bottom:5px}
+.cmp-logo{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:#fff;flex-shrink:0}
+.cmp-name{font-size:15px;font-weight:600;color:var(--clr-ink);letter-spacing:-.02em}
+.cmp-desc{font-size:12px;color:var(--clr-ink3)}
+.cmp-rows{display:flex;flex-direction:column}
+.cmp-row{display:flex;align-items:flex-start;gap:9px;padding:10px 0;border-bottom:1px solid var(--clr-border)}
+.cmp-row:last-child{border-bottom:none}
+.cmp-ico{width:19px;height:19px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-top:2px}
+.ico-bad{background:rgba(201,80,46,.1);color:#c9502e}
+.ico-good{background:rgba(14,161,88,.1);color:#0ea158}
+.ico-mid{background:rgba(207,141,19,.1);color:#cf8d13}
+.cmp-text strong{display:block;font-size:12px;font-weight:600;color:var(--clr-ink);margin-bottom:1px}
+.cmp-text span{font-size:11px;color:var(--clr-ink3);line-height:1.4}
+
+.tbl-wrap{margin-top:48px;border-radius:var(--r-md);overflow:hidden;border:1px solid var(--clr-border2);box-shadow:var(--sh-card)}
+table{width:100%;border-collapse:collapse}
+th{padding:12px 18px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--clr-ink3);background:var(--clr-card);border-bottom:1px solid var(--clr-border);font-family:monospace}
+th.ac{background:rgba(97,74,68,.08);color:var(--clr-brown);border-bottom-color:rgba(97,74,68,.2)}
+td{padding:12px 18px;font-size:13px;color:var(--clr-ink2);border-bottom:1px solid var(--clr-border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(97,74,68,.02)}
+td.ac{background:rgba(97,74,68,.04);border-left:2px solid rgba(97,74,68,.2);border-right:2px solid rgba(97,74,68,.2);font-weight:600;color:var(--clr-ink)}
+td.fc{font-weight:500;color:var(--clr-ink);min-width:170px}
+.yes{color:var(--clr-green);font-weight:700}.no{color:var(--clr-ink4)}.mid-t{color:var(--clr-amber);font-weight:600}
+
+/* === PRICING === */
+.price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:52px;align-items:start}
+.price-card{background:var(--clr-off);border:1px solid var(--clr-border2);border-radius:var(--r-lg);padding:28px;transition:all .3s;position:relative;overflow:hidden}
+.price-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(97,74,68,.1)}
+.price-card.featured{background:var(--clr-ink);border-color:var(--clr-ink);transform:scale(1.03)}
+.price-card.featured:hover{transform:scale(1.03) translateY(-4px)}
+.price-card.featured *{color:#fff !important}
+.featured-badge{position:absolute;top:12px;right:12px;background:rgba(255,255,255,.15);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:var(--r-pill);font-family:monospace}
+.price-tier{font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--clr-ink3);margin-bottom:8px;font-family:monospace}
+.price-amount{display:flex;align-items:flex-start;gap:2px;margin-bottom:8px}
+.price-cur{font-size:18px;font-weight:600;color:var(--clr-ink2);margin-top:8px}
+.price-num{font-size:52px;font-weight:600;letter-spacing:-.05em;color:var(--clr-ink);line-height:1}
+.price-mo{font-size:14px;color:var(--clr-ink3);align-self:flex-end;margin-bottom:6px}
+.price-desc{font-size:13px;color:var(--clr-ink2);margin-bottom:20px;line-height:1.5}
+.price-div{height:1px;background:var(--clr-border);margin-bottom:20px}
+.price-card.featured .price-div{background:rgba(255,255,255,.2)}
+.price-feats{display:flex;flex-direction:column;gap:10px;margin-bottom:22px}
+.pf{display:flex;align-items:flex-start;gap:8px;font-size:13px;color:var(--clr-ink2)}
+.pf-check{width:16px;height:16px;border-radius:4px;background:rgba(14,161,88,.12);color:var(--clr-green);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:9px;margin-top:2px}
+.price-card.featured .pf-check{background:rgba(255,255,255,.15);color:#fff}
+.pf-x{background:rgba(97,74,68,.07);color:var(--clr-ink3)}
+.pf.dim{color:var(--clr-ink3)}
+.btn-price{width:100%;padding:12px;border-radius:var(--r-pill);font-size:14px;font-weight:600;font-family:inherit;cursor:pointer;transition:all .18s;border:none}
+.btn-price-main{background:#fff;color:var(--clr-ink)}
+.btn-price-main:hover{background:rgba(255,255,255,.9);transform:translateY(-1px)}
+.btn-price-ghost{background:var(--clr-ink);color:#fff;box-shadow:var(--sh-btn)}
+.btn-price-ghost:hover{background:#2d2826;transform:translateY(-1px)}
+
+/* === FAQ === */
+.faq-list{max-width:680px;margin:44px auto 0;display:flex;flex-direction:column;gap:8px}
+.faq-item{background:var(--clr-off);border:1px solid var(--clr-border);border-radius:var(--r-md);overflow:hidden;transition:border-color .2s}
+.faq-item:hover{border-color:var(--clr-border2)}
+.faq-q{width:100%;display:flex;align-items:center;justify-content:space-between;padding:16px 20px;background:none;color:var(--clr-ink);font-size:14px;font-weight:600;cursor:pointer;gap:14px;font-family:inherit;border:none;text-align:left;transition:color .15s}
+.faq-q.open{color:var(--clr-brown)}
+.faq-icon{width:22px;height:22px;border-radius:6px;background:rgba(97,74,68,.07);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;color:var(--clr-ink3);transition:all .3s}
+.faq-q.open .faq-icon{background:rgba(97,74,68,.1);color:var(--clr-brown);transform:rotate(45deg)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.22,1,.36,1),padding .35s;font-size:14px;color:var(--clr-ink2);line-height:1.7;padding:0 20px}
+.faq-a.open{max-height:200px;padding:0 20px 16px}
+
+/* === CTA === */
+.cta-section{
+  padding:120px 24px;text-align:center;
+  background:linear-gradient(180deg,var(--clr-bg-bot) 0%,var(--clr-bg-mid) 50%,var(--clr-bg-top) 100%);
+  position:relative;overflow:hidden;
+}
+.cta-inner{max-width:640px;margin:0 auto;position:relative;z-index:1}
+.cta-h{font-size:clamp(36px,5vw,68px);font-weight:600;letter-spacing:-.05em;line-height:1.05;color:var(--clr-ink);margin-bottom:16px}
+.cta-sub{font-size:17px;color:var(--clr-ink2);margin-bottom:36px;line-height:1.6}
+.cta-note{margin-top:16px;font-size:12px;color:var(--clr-ink3);font-family:monospace}
+
+/* === FOOTER === */
+footer{border-top:1px solid var(--clr-border);background:var(--clr-off);padding:52px 0 28px}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:44px}
+.foot-logo{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.foot-logo-box{width:26px;height:26px;border-radius:7px;background:var(--clr-ink);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff}
+.foot-name{font-size:15px;font-weight:600;color:var(--clr-ink);letter-spacing:-.02em}
+.foot-desc{font-size:13px;color:var(--clr-ink3);line-height:1.65;max-width:220px;margin-bottom:18px}
+.foot-social{display:flex;gap:8px}
+.foot-soc{width:32px;height:32px;border-radius:8px;background:#fff;border:1px solid var(--clr-border2);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--clr-ink3);transition:all .15s}
+.foot-soc:hover{border-color:var(--clr-brown);color:var(--clr-brown);background:rgba(97,74,68,.05)}
+.foot-col-h{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--clr-ink);margin-bottom:14px;font-family:monospace}
+.foot-links{display:flex;flex-direction:column;gap:9px}
+.foot-links a{font-size:13px;color:var(--clr-ink3);transition:color .15s}
+.foot-links a:hover{color:var(--clr-brown)}
+.foot-bottom{border-top:1px solid var(--clr-border);padding-top:22px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot-copy{font-size:12px;color:var(--clr-ink3)}
+.foot-legal{display:flex;gap:18px}
+.foot-legal a{font-size:12px;color:var(--clr-ink3);transition:color .15s}
+.foot-legal a:hover{color:var(--clr-ink2)}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(97,74,68,.2);border-radius:2px}
+
+@media(max-width:1024px){
+  .feat-grid{grid-template-columns:repeat(2,1fr)}
+  .compare-cards{grid-template-columns:1fr}
+  .cmp-card.us{position:relative}
+  .vs-col{flex-direction:row}.vs-line{width:40px;height:1px;background:linear-gradient(to right,transparent,rgba(97,74,68,.3),transparent)}
+  .price-grid{grid-template-columns:1fr}.price-card.featured{transform:none}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:768px){
+  nav{padding:10px 10px 10px 16px}.nav-links{display:none}
+  .hero h1{font-size:clamp(38px,9vw,52px)}
+  .demo-grid,.steps,.testi-grid{grid-template-columns:1fr}
+  .steps::before{display:none}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .stat-item{border-bottom:1px solid var(--clr-border);border-right:none}
+  .stat-item:nth-child(odd){border-right:1px solid var(--clr-border)}
+  .stat-item:nth-child(3),.stat-item:nth-child(4){border-bottom:none}
+  .feat-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}.foot-bottom{flex-direction:column;text-align:center}
+  .dash-layout{grid-template-columns:1fr}.dash-sidebar{display:none}
+  .tbl-wrap{overflow-x:auto}
+  .section{padding:80px 0}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav-wrap">
+  <nav id="nav">
+    <div class="nav-logo">
+      <div class="nav-logo-box">AI</div>
+      Step2Dev
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compare">vs ChatGPT</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="nav-r">
+      <button class="btn-ghost-nav" onclick="window.location='/auth/login'">Sign in</button>
+      <button class="btn-primary-nav" onclick="window.location='/auth/register'">Try ARIA free →</button>
+    </div>
+  </nav>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner" style="position:relative;z-index:2;max-width:900px;margin:0 auto">
+    <div class="hero-eyebrow"><span class="eyebrow-dot"></span>Introducing ARIA — AI Senior DevOps Engineer</div>
+    <h1>Fix production errors<br>in 60 seconds.</h1>
+    <p class="hero-sub">Not ChatGPT. A specialist DevOps engineer that runs on AI — remembers your infrastructure for 4 weeks, diagnoses incidents instantly, and never sleeps.</p>
+    <div class="hero-actions">
+      <button class="btn-hero-main" onclick="window.location='/auth/register'">Try ARIA free — No card needed →</button>
+      <a href="https://app.guidde.com/share/playbooks/uTWsLnYCtmnsfgZHE5DUMn?origin=zERCwMIwWdXHbUU8NAftEU6D5ao1&mode=videoAndDoc" target="_blank" class="btn-hero-out">▶ Watch live demo</a>
+    </div>
+    <div class="hero-trust">
+      <span>Free to start</span>
+      <span>No setup required</span>
+      <span>Works in 30 seconds</span>
+    </div>
+  </div>
+
+  <!-- Dashboard preview -->
+  <div class="hero-preview wrap">
+    <div class="preview-card">
+      <div class="win-bar">
+        <div class="w-dot" style="background:#ff5f57"></div>
+        <div class="w-dot" style="background:#febc2e"></div>
+        <div class="w-dot" style="background:#28c840"></div>
+        <div class="win-url">app.step2dev.io/dashboard/aria</div>
+      </div>
+      <div class="dash-layout">
+        <div class="dash-sidebar">
+          <div class="sb-section">ARIA</div>
+          <div class="sb-item active"><span>💬</span> Chat</div>
+          <div class="sb-item"><span style="opacity:.6">🔴</span> Error Analyzer</div>
+          <div class="sb-item"><span style="opacity:.6">🖥️</span> Server Analyzer</div>
+          <div class="sb-item"><span style="opacity:.6">📦</span> Repo Analyzer</div>
+          <div class="sb-div"></div>
+          <div class="sb-section">History</div>
+          <div class="hist-item"><div class="h-dot" style="background:#e88"></div>Nginx 502 fix</div>
+          <div class="hist-item"><div class="h-dot" style="background:#84b9ef"></div>Docker OOM issue</div>
+          <div class="hist-item"><div class="h-dot" style="background:#0ea158"></div>k8s crashloop</div>
+          <div class="hist-item"><div class="h-dot" style="background:#ffa657"></div>Postgres slow query</div>
+        </div>
+        <div class="dash-main">
+          <div class="dash-tabs">
+            <div class="d-tab active">💬 Chat</div>
+            <div class="d-tab">🔴 Error</div>
+            <div class="d-tab">🖥️ Server</div>
+            <div class="d-tab">📦 Repo</div>
+          </div>
+          <div class="dash-msgs">
+            <div class="dmsg u"><div class="dav u">Y</div><div class="dbub u">My Node.js app crashed — heap out of memory error</div></div>
+            <div class="dmsg"><div class="dav ai">AI</div><div class="dbub ai"><span style="color:#e88;font-weight:700">🔴 OOM Kill</span> — V8 heap hit the 1.5GB default limit.<br><span style="color:#9e9896;font-size:10px">Root cause: Memory leak + heap too small for workload.</span></div></div>
+            <div class="code-blk">
+              <div class="code-top"><div class="code-lang">bash</div><span style="font-size:10px;color:rgba(255,255,255,.2);font-family:monospace">Copy</span></div>
+              <div class="code-body"><span class="g"># Immediate fix</span><br><span class="o">NODE_OPTIONS</span>=<span class="b">--max-old-space-size=4096</span> node app.js<br><br><span class="g"># Permanent — PM2</span><br><span class="b">pm2 start</span> app.js <span class="o">--node-args</span>=<span class="b">"--max-old-space-size=4096"</span></div>
+            </div>
+            <div class="typing-row"><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div><span style="font-size:10px;color:#9e9896">ARIA generating verify step…</span></div>
+          </div>
+          <div class="dash-metrics">
+            <div class="metric"><div class="m-label">CPU</div><div class="m-bar"><div class="m-fill" style="width:42%;background:#0ea158"></div></div><div class="m-val" style="color:#0ea158">42%</div></div>
+            <div class="metric"><div class="m-label">RAM</div><div class="m-bar"><div class="m-fill" style="width:78%;background:#cf8d13"></div></div><div class="m-val" style="color:#cf8d13">78%</div></div>
+            <div class="metric"><div class="m-label">DISK</div><div class="m-bar"><div class="m-fill" style="width:55%;background:#0ea158"></div></div><div class="m-val" style="color:#0ea158">55%</div></div>
+            <div class="metric"><div class="m-label">STATUS</div><div class="m-val" style="color:#0ea158;font-size:11px">● online</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="preview-fade"></div>
+  </div>
+</section>
+
+<!-- TRUST LOGOS -->
+<div class="trust">
+  <div class="wrap">
+    <div class="trust-lbl">Trusted by engineers at</div>
+    <div class="trust-logos">
+      <div class="trust-logo">Stripe</div>
+      <div class="trust-logo">Vercel</div>
+      <div class="trust-logo">Shopify</div>
+      <div class="trust-logo">Notion</div>
+      <div class="trust-logo">Linear</div>
+      <div class="trust-logo">Figma</div>
+      <div class="trust-logo">Resend</div>
+    </div>
+  </div>
+</div>
+
+<div class="grad-div"></div>
+
+<!-- FEATURES -->
+<section class="feat-section section" id="features">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">Everything you need</div>
+      <h2 class="sec-h">Not just AI chat.<br>A real engineer.</h2>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card reveal d1"><div class="feat-icon">🧠</div><div class="feat-name">4-Week Memory</div><div class="feat-desc">Remembers every error, server, and repo. References past issues. Gets more specific over time.</div><div class="feat-chip">PERSISTENT_CONTEXT</div></div>
+      <div class="feat-card reveal d2"><div class="feat-icon">⚡</div><div class="feat-name">Error → Fix in Seconds</div><div class="feat-desc">Paste any stack trace. Root cause + exact commands + prevention. 15+ error types auto-detected.</div><div class="feat-chip">AUTO_DETECT_15+</div></div>
+      <div class="feat-card reveal d3"><div class="feat-icon">📦</div><div class="feat-name">Repo Security Grader</div><div class="feat-desc">Drop any GitHub URL. Grade A–F on security, CI/CD, Docker. Keep chatting about the results.</div><div class="feat-chip">A_TO_F_GRADES</div></div>
+      <div class="feat-card reveal d1"><div class="feat-icon">🖥️</div><div class="feat-name">Server Health AI</div><div class="feat-desc">Connect servers, live CPU/RAM/disk with AI diagnosis. Ask follow-ups about any finding.</div><div class="feat-chip">LIVE_METRICS</div></div>
+      <div class="feat-card reveal d2"><div class="feat-icon">💬</div><div class="feat-name">Continue Any Analysis</div><div class="feat-desc">After every fix or scan — keep chatting. ARIA holds full context and goes deeper on anything.</div><div class="feat-chip">PERSISTENT_CHAT</div></div>
+      <div class="feat-card reveal d3"><div class="feat-icon">🛡️</div><div class="feat-name">Production-First Always</div><div class="feat-desc">Every answer assumes production. Every command is copy-paste ready. Zero generic advice.</div><div class="feat-chip">ZERO_FLUFF</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">Simple by design</div>
+      <h2 class="sec-h">Signup to fix<br>under 60 seconds</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal d1"><div class="step-n">1</div><div class="step-title">Create your account</div><div class="step-desc">Name + email. No password, no card. In the dashboard in 10 seconds flat.</div></div>
+      <div class="step reveal d2"><div class="step-n">2</div><div class="step-title">Ask, paste, or connect</div><div class="step-desc">Chat, paste an error, drop a GitHub URL, or connect a server. Works instantly.</div></div>
+      <div class="step reveal d3"><div class="step-n">3</div><div class="step-title">Fix it. Keep going.</div><div class="step-desc">Copy the command, run it, then ask follow-ups. ARIA stays in full context.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- DEMO -->
+<section class="feat-section section" id="demo">
+  <div class="wrap">
+    <div class="demo-grid">
+      <div class="reveal">
+        <div class="sec-tag">Live example</div>
+        <h2 class="sec-h" style="margin-top:14px;font-size:clamp(28px,3.5vw,44px)">Watch ARIA solve<br>a real incident</h2>
+        <p style="font-size:14px;color:var(--clr-ink2);margin-bottom:28px;line-height:1.7">No hallucinations. No generic advice.<br>Exact root cause and copy-paste commands.</p>
+        <div class="demo-pts">
+          <div class="demo-pt"><div class="demo-pt-icon">🔍</div><div><div class="demo-pt-title">Reads the full stack trace</div><div class="demo-pt-desc">Not just the last line — full context analysis</div></div></div>
+          <div class="demo-pt"><div class="demo-pt-icon">🧠</div><div><div class="demo-pt-title">Explains why it happened</div><div class="demo-pt-desc">Root cause in plain English, not jargon</div></div></div>
+          <div class="demo-pt"><div class="demo-pt-icon">⚡</div><div><div class="demo-pt-title">Copy-paste fix in seconds</div><div class="demo-pt-desc">Every command is production-safe and ready to run</div></div></div>
+          <div class="demo-pt"><div class="demo-pt-icon">💬</div><div><div class="demo-pt-title">Continue the conversation</div><div class="demo-pt-desc">Ask follow-ups — ARIA never loses context</div></div></div>
+        </div>
+      </div>
+      <div class="reveal d2">
+        <div class="terminal">
+          <div class="term-bar">
+            <div class="t-dot" style="background:#ff5f57"></div>
+            <div class="t-dot" style="background:#febc2e"></div>
+            <div class="t-dot" style="background:#28c840"></div>
+            <div class="term-title">ARIA · Error Analyzer → Follow-up Chat</div>
+          </div>
+          <div class="term-body">
+            <div class="tl"><span class="tp">user@prod:~$</span><span class="tc"> kubectl logs api-7d9f8b</span></div>
+            <div class="tl"><span class="te">Error: ENOMEM: not enough memory</span></div>
+            <div class="tl"><span class="te">Killed (signal 9)</span></div>
+            <div style="height:10px"></div>
+            <div class="tl"><span class="tai">ARIA →</span><span class="tc"> Analyzing OOM kill pattern…</span></div>
+            <div class="tl"><span class="th">🔴 Memory limit — no limits set in k8s spec</span></div>
+            <div class="tl" style="padding-left:18px"><span class="to">Node spawning children on traffic burst → OOM</span></div>
+            <div style="height:10px"></div>
+            <div class="tl"><span class="ts">⚡ Fix:</span></div>
+            <div class="tl" style="padding-left:12px"><span class="tc">kubectl set resources deploy/api \</span></div>
+            <div class="tl" style="padding-left:24px"><span class="tc">--limits=memory=2Gi --requests=memory=512Mi</span></div>
+            <div style="height:10px"></div>
+            <div class="tl"><span class="tp">user@prod:~$</span><span class="tc"> Should I add HPA too?</span></div>
+            <div class="tl"><span class="tai">ARIA →</span><span class="to"> Yes — here's the exact config:<span class="cur"></span></span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- STATS -->
+<section class="stats-sec">
+  <div class="wrap">
+    <div class="stats-grid">
+      <div class="stat-item reveal d1"><div class="stat-n" data-target="87" data-suffix="%">0%</div><div class="stat-l">Less debugging time</div><div class="stat-s">avg across all users</div></div>
+      <div class="stat-item reveal d2"><div class="stat-n" data-target="12" data-suffix="s">0s</div><div class="stat-l">Average time to fix</div><div class="stat-s">from paste to command</div></div>
+      <div class="stat-item reveal d3"><div class="stat-n" data-target="15" data-prefix="+">0</div><div class="stat-l">Error types detected</div><div class="stat-s">auto-classified instantly</div></div>
+      <div class="stat-item reveal d4"><div class="stat-n" data-target="4" data-suffix="wk">0</div><div class="stat-l">Memory window</div><div class="stat-s">full infra context</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- TESTIMONIALS -->
+<section class="section">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">What engineers say</div>
+      <h2 class="sec-h">Developers love ARIA</h2>
+    </div>
+    <div class="testi-grid">
+      <div class="testi-card reveal d1">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">ARIA diagnosed a production Nginx issue I'd been chasing for 6 hours — in literally 12 seconds. Exact commands, root cause, permanent fix. I almost cried.</p>
+        <div class="testi-who"><div class="testi-av" style="background:#614a44">MK</div><div><div class="testi-name">Marcus K.</div><div class="testi-role">Senior SRE · Fintech startup</div></div></div>
+      </div>
+      <div class="testi-card reveal d2">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">The repo analyzer found 3 critical Docker security vulnerabilities our whole team missed in code review. This pays for itself in the first hour.</p>
+        <div class="testi-who"><div class="testi-av" style="background:#0ea158">SC</div><div><div class="testi-name">Sarah C.</div><div class="testi-role">Lead DevOps · E-commerce</div></div></div>
+      </div>
+      <div class="testi-card reveal d3">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-q">The memory feature is insane — it remembered a Postgres issue from 3 weeks ago and connected it to my current problem. Nothing else does that.</p>
+        <div class="testi-who"><div class="testi-av" style="background:#156cc2">RP</div><div><div class="testi-name">Raj P.</div><div class="testi-role">CTO · B2B SaaS</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- COMPARISON -->
+<section class="compare-section section" id="compare">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">Why ARIA wins</div>
+      <h2 class="sec-h">Not ChatGPT.<br>A specialist.</h2>
+    </div>
+    <div class="compare-cards">
+      <div class="cmp-card them reveal d1">
+        <div class="cmp-hd"><div class="cmp-brand"><div class="cmp-logo" style="background:#1a1615;font-size:10px">AI</div><div><div class="cmp-name">ChatGPT / Claude</div><div class="cmp-desc">General-purpose AI assistant</div></div></div></div>
+        <div class="cmp-rows">
+          <div class="cmp-row"><div class="cmp-ico ico-bad">✕</div><div class="cmp-text"><strong>No memory between sessions</strong><span>Forgets you every tab. Repeat your stack every time.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-bad">✕</div><div class="cmp-text"><strong>Generic answers</strong><span>"It depends on your setup…" — not at 3 AM.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-bad">✕</div><div class="cmp-text"><strong>No server monitoring</strong><span>Can't see CPU/RAM/disk. Just guessing.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-bad">✕</div><div class="cmp-text"><strong>No repo analysis</strong><span>Can't scan GitHub for real vulnerabilities.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-mid">~</div><div class="cmp-text"><strong>Placeholder commands</strong><span>"Replace YOUR_VALUE" — every single time.</span></div></div>
+        </div>
+      </div>
+      <div class="vs-col"><div class="vs-line"></div><div class="vs-badge">VS</div><div class="vs-line"></div></div>
+      <div class="cmp-card us reveal d2">
+        <div class="us-badge">✦ ARIA — Built for DevOps</div>
+        <div class="cmp-hd" style="margin-top:8px"><div class="cmp-brand"><div class="cmp-logo" style="background:#614a44">AI</div><div><div class="cmp-name" style="color:var(--clr-brown)">ARIA by Step2Dev</div><div class="cmp-desc">AI Senior DevOps Engineer</div></div></div></div>
+        <div class="cmp-rows">
+          <div class="cmp-row"><div class="cmp-ico ico-good">✓</div><div class="cmp-text"><strong style="color:var(--clr-brown)">4-week persistent memory</strong><span>Remembers your stack, errors, servers. Gets smarter.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-good">✓</div><div class="cmp-text"><strong style="color:var(--clr-brown)">Exact production answers</strong><span>Root cause + commands + verify + prevent. Every time.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-good">✓</div><div class="cmp-text"><strong style="color:var(--clr-brown)">Live server monitoring</strong><span>Real CPU/RAM/disk. Diagnoses what's actually wrong.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-good">✓</div><div class="cmp-text"><strong style="color:var(--clr-brown)">Repo security grader A–F</strong><span>Scans your GitHub. Real vulnerabilities in 30 seconds.</span></div></div>
+          <div class="cmp-row"><div class="cmp-ico ico-good">✓</div><div class="cmp-text"><strong style="color:var(--clr-brown)">100% copy-paste commands</strong><span>No placeholders. No "adjust for your setup." Just run it.</span></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="tbl-wrap reveal">
+      <table>
+        <thead><tr><th>Feature</th><th>ChatGPT / Claude</th><th>GitHub Copilot</th><th>Datadog AI</th><th class="ac">✦ ARIA</th></tr></thead>
+        <tbody>
+          <tr><td class="fc">DevOps memory</td><td><span class="no">✕ None</span></td><td><span class="no">✕ None</span></td><td><span class="mid-t">~ Basic</span></td><td class="ac"><span class="yes">✓ 4-week full memory</span></td></tr>
+          <tr><td class="fc">Error → fix in seconds</td><td><span class="mid-t">~ Sometimes</span></td><td><span class="no">✕ Not for this</span></td><td><span class="mid-t">~ Alerts only</span></td><td class="ac"><span class="yes">✓ Always, structured</span></td></tr>
+          <tr><td class="fc">Live server metrics</td><td><span class="no">✕ No</span></td><td><span class="no">✕ No</span></td><td><span class="yes">✓ Yes</span></td><td class="ac"><span class="yes">✓ Yes + AI diagnosis</span></td></tr>
+          <tr><td class="fc">Repo security scan</td><td><span class="no">✕ No</span></td><td><span class="mid-t">~ Code only</span></td><td><span class="no">✕ No</span></td><td class="ac"><span class="yes">✓ Full A–F grade</span></td></tr>
+          <tr><td class="fc">Continue after analysis</td><td><span class="mid-t">~ Loses context</span></td><td><span class="no">✕ No</span></td><td><span class="no">✕ No</span></td><td class="ac"><span class="yes">✓ Full context chat</span></td></tr>
+          <tr><td class="fc">Price</td><td>$20/month</td><td>$19/month</td><td>$15–300+/month</td><td class="ac"><span class="yes">Free · $10/month Pro</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">Simple pricing</div>
+      <h2 class="sec-h">Start free.<br>Upgrade when ready.</h2>
+    </div>
+    <div class="price-grid">
+      <div class="price-card reveal d1">
+        <div class="price-tier">Free</div>
+        <div class="price-amount"><span class="price-cur">$</span><span class="price-num">0</span><span class="price-mo">/mo</span></div>
+        <div class="price-desc">Perfect for trying ARIA and occasional debugging.</div>
+        <div class="price-div"></div>
+        <div class="price-feats">
+          <div class="pf"><div class="pf-check">✓</div>20 AI messages / day</div>
+          <div class="pf"><div class="pf-check">✓</div>Chat + Error Analyzer</div>
+          <div class="pf"><div class="pf-check">✓</div>3 servers, 3 repos/day</div>
+          <div class="pf dim"><div class="pf-check pf-x">—</div>No 4-week memory</div>
+          <div class="pf dim"><div class="pf-check pf-x">—</div>No unlimited access</div>
+        </div>
+        <button class="btn-price btn-price-ghost" onclick="window.location='/auth/register'">Get started free</button>
+      </div>
+      <div class="price-card featured reveal d2">
+        <div class="featured-badge">Most Popular</div>
+        <div class="price-tier" style="color:rgba(255,255,255,.6)">Pro</div>
+        <div class="price-amount"><span class="price-cur" style="color:rgba(255,255,255,.6)">$</span><span class="price-num">10</span><span class="price-mo" style="color:rgba(255,255,255,.5)">/mo</span></div>
+        <div class="price-desc">For engineers who ship daily and need zero limits.</div>
+        <div class="price-div"></div>
+        <div class="price-feats">
+          <div class="pf"><div class="pf-check">✓</div>Unlimited messages</div>
+          <div class="pf"><div class="pf-check">✓</div>All 4 modes + follow-up chat</div>
+          <div class="pf"><div class="pf-check">✓</div>10 servers, unlimited repos</div>
+          <div class="pf"><div class="pf-check">✓</div>Full 4-week memory system</div>
+          <div class="pf"><div class="pf-check">✓</div>Priority response speed</div>
+        </div>
+        <button class="btn-price btn-price-main" onclick="window.location='/auth/register?plan=pro'">Start Pro →</button>
+      </div>
+      <div class="price-card reveal d3">
+        <div class="price-tier">Team</div>
+        <div class="price-amount"><span class="price-cur">$</span><span class="price-num">39</span><span class="price-mo">/mo</span></div>
+        <div class="price-desc">For DevOps teams sharing infrastructure memory.</div>
+        <div class="price-div"></div>
+        <div class="price-feats">
+          <div class="pf"><div class="pf-check">✓</div>Everything in Pro</div>
+          <div class="pf"><div class="pf-check">✓</div>5 seats, 50 servers</div>
+          <div class="pf"><div class="pf-check">✓</div>Shared team memory</div>
+          <div class="pf"><div class="pf-check">✓</div>API access</div>
+        </div>
+        <button class="btn-price btn-price-ghost" onclick="window.location='/auth/register?plan=team'">Start team trial</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- FAQ -->
+<section class="feat-section section" id="faq">
+  <div class="wrap">
+    <div class="center reveal" style="text-align:center">
+      <div class="sec-tag">FAQ</div>
+      <h2 class="sec-h">Common questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal d1"><button class="faq-q" onclick="toggleFaq(this)">How is ARIA different from ChatGPT for DevOps?<div class="faq-icon">+</div></button><div class="faq-a">Three differences: First, ARIA remembers your infrastructure for 4 weeks — ChatGPT forgets every session. Second, ARIA is pre-configured as a senior DevOps engineer and never gives generic answers. Third, every response follows a fixed format (Root Cause → Fix → Verify → Prevent) so you know exactly what to run, even at 3 AM.</div></div>
+      <div class="faq-item reveal d2"><button class="faq-q" onclick="toggleFaq(this)">Can I keep chatting after an analysis?<div class="faq-icon">+</div></button><div class="faq-a">Yes — after any error analysis, repo scan, or server health check, the conversation stays open. Ask "can you fix the Dockerfile?" or "what about CI/CD?" — ARIA stays in full context.</div></div>
+      <div class="faq-item reveal d3"><button class="faq-q" onclick="toggleFaq(this)">What does "4-week memory" actually mean?<div class="faq-icon">+</div></button><div class="faq-a">Every time you tell ARIA about your infrastructure — stack, server specs, past errors — she retains it for 4 weeks. When a similar issue appears later, she connects the dots without re-explaining. The longer you use ARIA, the faster the diagnoses get.</div></div>
+      <div class="faq-item reveal d1"><button class="faq-q" onclick="toggleFaq(this)">What if ARIA gives me the wrong fix?<div class="faq-icon">+</div></button><div class="faq-a">Every fix includes a "Verify It Worked" command so you can confirm before committing. The root cause explanation lets you understand what's happening — you're not blindly running commands. For critical systems, test in staging first.</div></div>
+      <div class="faq-item reveal d2"><button class="faq-q" onclick="toggleFaq(this)">What's your refund policy?<div class="faq-icon">+</div></button><div class="faq-a">Full refund within 14 days, no questions asked. Email us and we'll process it the same day. We're confident you'll see value in the first session — but if you don't, we don't want your money.</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="grad-div"></div>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner reveal">
+    <div class="sec-tag" style="margin-bottom:22px">Ready?</div>
+    <h2 class="cta-h">Stop Googling errors.<br>Start fixing them.</h2>
+    <p class="cta-sub">Join developers cutting debugging time by 87%.<br>Free to start. In your dashboard in 30 seconds.</p>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap">
+      <button class="btn-hero-main" style="font-size:16px;padding:16px 32px" onclick="window.location='/auth/register'">Start Free — No card needed →</button>
+      <button class="btn-hero-out" onclick="window.location='/auth/login'">Sign in</button>
+    </div>
+    <div class="cta-note">No credit card · Cancel anytime · 14-day refund guarantee</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo"><div class="foot-logo-box">AI</div><span class="foot-name">Step2Dev</span></div>
+        <div class="foot-desc">ARIA — the AI Senior DevOps Engineer that remembers everything, fixes anything, and never sleeps.</div>
+        <div class="foot-social">
+          <a class="foot-soc" href="https://x.com/im__yash12" target="_blank" rel="noopener">𝕏</a>
+          <a class="foot-soc" href="https://www.linkedin.com/company/step2dev" target="_blank" rel="noopener">in</a>
+          <a class="foot-soc" href="#">⌥</a>
+        </div>
+      </div>
+      <div>
+        <div class="foot-col-h">Product</div>
+        <div class="foot-links"><a href="/features">Features</a><a href="/pricing">Pricing</a><a href="/dashboard/aria">Dashboard</a><a href="/changelog">Changelog</a><a href="/roadmap">Roadmap</a></div>
+      </div>
+      <div>
+        <div class="foot-col-h">Company</div>
+        <div class="foot-links"><a href="/about">About</a><a href="/blog">Blog</a><a href="/careers">Careers</a><a href="/contact">Contact</a></div>
+      </div>
+      <div>
+        <div class="foot-col-h">Legal</div>
+        <div class="foot-links"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/cookies">Cookies</a><a href="/security">Security</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-copy">© 2025 Step2Dev. All rights reserved.</div>
+      <div class="foot-legal"><a href="/privacy">Privacy</a><a href="/terms">Terms</a><a href="/cookies">Cookies</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('nav')
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',scrollY>20),{passive:true})
+
+// Scroll reveal + count-up
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');e.target.querySelectorAll('[data-target]').forEach(el=>{if(!el.dataset.counted){el.dataset.counted='1';animCount(el)}})}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'})
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))
+
+function animCount(el){const t=+el.dataset.target,s=el.dataset.suffix||'',p=el.dataset.prefix||'',d=1500,st=performance.now();(function go(now){const r=Math.min((now-st)/d,1),e=1-Math.pow(1-r,4);el.textContent=p+Math.floor(e*t)+s;r<1&&requestAnimationFrame(go)})(st)}
+
+// FAQ
+function toggleFaq(btn){const item=btn.closest('.faq-item'),ans=item.querySelector('.faq-a'),open=btn.classList.contains('open');document.querySelectorAll('.faq-q.open').forEach(q=>{q.classList.remove('open');q.closest('.faq-item').querySelector('.faq-a').classList.remove('open')});if(!open){btn.classList.add('open');ans.classList.add('open')}}
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a=>{a.addEventListener('click',e=>{const t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'})}})})
+
+// Card tilt on hover
+document.querySelectorAll('.feat-card,.price-card,.cmp-card,.testi-card').forEach(card=>{
+  card.addEventListener('mousemove',e=>{
+    const r=card.getBoundingClientRect()
+    const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5
+    card.style.transform=`perspective(600px) rotateX(${-y*6}deg) rotateY(${x*6}deg) translateY(-3px) scale(1.01)`
+    card.style.transition='transform .05s'
+  })
+  card.addEventListener('mouseleave',()=>{card.style.transition='all .5s cubic-bezier(.22,1,.36,1)';card.style.transform=''})
+})
+</script>
+</body>
+</html>
