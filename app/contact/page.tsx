@@ -23,7 +23,7 @@ export default function ContactPage() {
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 36 }}>
         <div>
           <h2 style={{ fontSize: 16, fontWeight: 600, color: '#1a1615', marginBottom: 16 }}>Contact options</h2>
-          {[{icon:'✉️',label:'Email',val:'yash@step2dev.com',href:'mailto:yash@step2dev.com'},{icon:'𝕏',label:'Twitter / X',val:'@im__yash12',href:'https://x.com/im__yash12'}].map(c=>(
+          {[{icon:'✉️',label:'Email',val:'yashkumar@step2dev.com',href:'mailto:yashkumar@step2dev.com'},{icon:'𝕏',label:'Twitter / X',val:'@im__yash12',href:'https://x.com/im__yash12'}].map(c=>(
             <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" style={card}>
               <span style={{fontSize:20}}>{c.icon}</span>
               <div><div style={{fontSize:11,color:'#9e9896',marginBottom:2}}>{c.label}</div><div style={{fontSize:14,fontWeight:600,color:'#1a1615'}}>{c.val}</div></div>
@@ -39,7 +39,7 @@ export default function ContactPage() {
             <div style={{padding:24,background:'rgba(14,161,88,.07)',borderRadius:12,border:'1px solid rgba(14,161,88,.2)',textAlign:'center'}}>
               <div style={{fontSize:28,marginBottom:10}}>✓</div>
               <div style={{fontWeight:600,color:'#1a1615',marginBottom:6}}>Opening your email app…</div>
-              <div style={{fontSize:13,color:'#757170'}}>Or email directly: yash@step2dev.com</div>
+              <div style={{fontSize:13,color:'#757170'}}>Or email directly: yashkumar@step2dev.com</div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} style={{display:'flex',flexDirection:'column',gap:14}}>
